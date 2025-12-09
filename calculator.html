@@ -135,14 +135,20 @@
             return;
           }
           try {
-            const sanitized = expression.replace(/[^0-9+\-*/.]/g, "");
+            // Заменяем символы операторов на стандартные перед вычислением
+            let sanitized = expression
+              .replace(/÷/g, "/")
+              .replace(/×/g, "*")
+              .replace(/−/g, "-")
+              .replace(/[^0-9+\-*/.]/g, "");
             const result = Function(`"use strict"; return (${sanitized})`)();
-            expression = Number.isFinite(result) ? result.toString() : "";
-            console.log("Результат:", expression || "Ошибка");
-            updateDisplay(expression || "Ошибка");
+            const resultStr = Number.isFinite(result) ? result.toString() : "Ошибка";
+            expression = resultStr;
+            console.log("Результат:", resultStr);
+            updateDisplay(resultStr);
           } catch (err) {
             expression = "";
-            console.log("Ошибка вычисления");
+            console.log("Ошибка вычисления:", err);
             updateDisplay("Ошибка");
           }
         }
