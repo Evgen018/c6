@@ -138,9 +138,11 @@
             const sanitized = expression.replace(/[^0-9+\-*/.]/g, "");
             const result = Function(`"use strict"; return (${sanitized})`)();
             expression = Number.isFinite(result) ? result.toString() : "";
+            console.log("Результат:", expression || "Ошибка");
             updateDisplay(expression || "Ошибка");
           } catch (err) {
             expression = "";
+            console.log("Ошибка вычисления");
             updateDisplay("Ошибка");
           }
         }
